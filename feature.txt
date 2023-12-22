@@ -1,0 +1,34 @@
+Catalog=YcpOct23;Integrated Security=True;";
+            try
+            {
+                cn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = cn;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "select * from Employees where EmpNo = @EmpNo";
+                cmd.Parameters.AddWithValue("@EmpNo", EmpNo);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    obj.EmpNo = dr.GetInt32("EmpNo");
+                    obj.Name = dr.GetString("Name");
+                    obj.Basic = dr.GetDecimal("Basic");
+                    obj.DeptNo = dr.GetInt32("DeptNo");
+                }
+                else
+                    obj = null;
+
+                dr.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return obj;
+        }
